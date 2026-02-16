@@ -4,21 +4,16 @@
   <meta charset="UTF-8">
   <title>Address QR Generator</title>
 
-  <!-- QR Code Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #020617, #0f172a);
+      background: #0f172a;
       color: white;
       text-align: center;
       padding: 40px 20px;
-    }
-
-    h1 {
-      margin-bottom: 10px;
     }
 
     textarea {
@@ -29,7 +24,6 @@
       font-size: 16px;
       border-radius: 8px;
       border: none;
-      outline: none;
     }
 
     button {
@@ -42,35 +36,23 @@
       color: white;
     }
 
-    #generateBtn {
-      background: #2563eb;
-    }
-
-    #downloadBtn {
-      background: #16a34a;
-      display: none;
-      margin-left: 10px;
-    }
+    #generateBtn { background: #2563eb; }
+    #downloadBtn { background: #16a34a; display: none; margin-left: 10px; }
 
     #qrcode {
       margin-top: 30px;
-      display: flex;
-      justify-content: center;
-    }
-
-    footer {
-      margin-top: 60px;
-      font-size: 14px;
-      opacity: 0.7;
+      background: white;
+      padding: 20px;      /* ✅ quiet zone */
+      display: inline-block;
     }
   </style>
 </head>
 <body>
 
   <h1>Address QR Generator</h1>
-  <p>Enter full address below</p>
+  <p>Enter full address (opens in Google Maps)</p>
 
-  <textarea id="address" placeholder="Enter address here..."></textarea>
+  <textarea id="address" placeholder="Example: DPS Kamptee Road Nagpur"></textarea>
   <br>
 
   <button id="generateBtn" onclick="generateQR()">Generate QR Code</button>
@@ -78,45 +60,36 @@
 
   <div id="qrcode"></div>
 
-  <footer>
-    © 2026 Address QR Generator | No data stored
-  </footer>
-
   <script>
     function generateQR() {
       const address = document.getElementById("address").value.trim();
-
       if (!address) {
         alert("Please enter an address");
         return;
       }
 
+      // ✅ Convert address to Google Maps URL
+      const mapUrl =
+        "https://www.google.com/maps/search/?api=1&query=" +
+        encodeURIComponent(address);
+
       const qrDiv = document.getElementById("qrcode");
       qrDiv.innerHTML = "";
 
       new QRCode(qrDiv, {
-        text: address,
-        width: 250,
-        height: 250
+        text: mapUrl,
+        width: 300,
+        height: 300,
+        correctLevel: QRCode.CorrectLevel.H // ✅ high error correction
       });
 
-      // Show download button
       document.getElementById("downloadBtn").style.display = "inline-block";
     }
 
     function downloadQR() {
-      const img = document.querySelector("#qrcode img");
       const canvas = document.querySelector("#qrcode canvas");
-
-      let dataUrl;
-      if (img) {
-        dataUrl = img.src;
-      } else if (canvas) {
-        dataUrl = canvas.toDataURL("image/png");
-      }
-
       const link = document.createElement("a");
-      link.href = dataUrl;
+      link.href = canvas.toDataURL("image/png");
       link.download = "address-qr.png";
       link.click();
     }
