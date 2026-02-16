@@ -1,90 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Address QR Generator | Instant Download</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Address QR Generator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background: #0f172a;
       color: white;
       text-align: center;
+      padding-top: 50px;
     }
-
-    .container {
-      padding: 60px 20px;
-    }
-
-    h1 {
-      font-size: 42px;
-      margin-bottom: 10px;
-    }
-
-    p {
-      font-size: 18px;
-      opacity: 0.9;
-    }
-
-    .btn {
-      margin-top: 30px;
-      padding: 15px 30px;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #00c6ff;
-      color: white;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background: #0072ff;
-    }
-
-    .features {
-      margin-top: 60px;
-    }
-
-    .feature-item {
-      margin: 15px 0;
+    textarea {
+      width: 80%;
+      height: 100px;
+      padding: 10px;
       font-size: 16px;
     }
-
-    footer {
-      margin-top: 80px;
-      padding: 20px;
-      font-size: 14px;
-      opacity: 0.7;
+    button {
+      margin-top: 15px;
+      padding: 12px 25px;
+      font-size: 16px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    #qrcode {
+      margin-top: 25px;
     }
   </style>
 </head>
 <body>
 
-<div class="container">
   <h1>Address QR Generator</h1>
-  <p>Generate professional, secure and printable address QR codes instantly.</p>
+  <p>Enter full address below</p>
 
-  <button class="btn" onclick="alert('QR Generator Coming Soon')">
-    Generate QR Code
-  </button>
+  <textarea id="address" placeholder="Enter address here..."></textarea><br>
+  <button onclick="generateQR()">Generate QR Code</button>
 
-  <div class="features">
-    <div class="feature-item">✔ Instant QR Generation</div>
-    <div class="feature-item">✔ High Quality PNG Download</div>
-    <div class="feature-item">✔ Secure Razorpay Payment</div>
-    <div class="feature-item">✔ No Login Required</div>
-  </div>
-</div>
+  <div id="qrcode"></div>
 
-<footer>
-  © 2026 Address QR Generator. All rights reserved.
-  <br><br>
-  <a href="privacy.html" style="color:white;">Privacy Policy</a> |
-  <a href="terms.html" style="color:white;">Terms & Conditions</a>
-  <br><br>
-  Contact: dpsvicky1985@gmail.com
-</footer>
+  <script>
+    function generateQR() {
+      const address = document.getElementById("address").value.trim();
+      if (!address) {
+        alert("Please enter an address");
+        return;
+      }
+      document.getElementById("qrcode").innerHTML = "";
+      new QRCode(document.getElementById("qrcode"), {
+        text: address,
+        width: 200,
+        height: 200
+      });
+    }
+  </script>
 
 </body>
 </html>
